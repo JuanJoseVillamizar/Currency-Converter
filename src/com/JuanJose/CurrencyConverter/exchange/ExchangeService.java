@@ -18,18 +18,16 @@ public class ExchangeService {
         API_KEY = config.get("EXCHANGE_API_KEY");
     }
     public Rates fetchRates(String baseCurrent,String targetCurrent,double amount) throws IOException, InterruptedException {
-        System.out.println(API_KEY);
         String URL_API = "https://v6.exchangerate-api.com/v6/"+API_KEY+"/pair/"+baseCurrent+"/"+targetCurrent +"/"+amount;
-        System.out.println(URL_API);
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URL_API))
                 .build();
             HttpResponse<String> response = client
                     .send(request, HttpResponse.BodyHandlers.ofString());
-            return parseRespone(response.body());
+            return parseResponse(response.body());
     }
-    public Rates parseRespone (String jsonResponse){
+    public Rates parseResponse (String jsonResponse){
         Gson gson = new GsonBuilder()
                 .create();
         return gson.fromJson(jsonResponse, Rates.class);
