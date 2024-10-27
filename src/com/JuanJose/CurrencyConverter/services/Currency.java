@@ -1,4 +1,4 @@
-package com.JuanJose.CurrencyConverter.constans;
+package com.JuanJose.CurrencyConverter.services;
 
 public class Currency {
     public static final String USD = "USD";

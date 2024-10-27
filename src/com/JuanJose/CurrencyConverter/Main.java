@@ -2,7 +2,7 @@ package com.JuanJose.CurrencyConverter;
 
 import com.JuanJose.CurrencyConverter.exchange.ExchangeService;
 import com.JuanJose.CurrencyConverter.models.Rates;
-import com.JuanJose.CurrencyConverter.constans.Currency;
+import com.JuanJose.CurrencyConverter.services.CurrencyPairManager;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -11,24 +11,22 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         ExchangeService exchanges = new ExchangeService();
+        CurrencyPairManager pairManager = new CurrencyPairManager();
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
         while (true) {
             displayMenu();
             int option = getOption(scanner);
             if (option == 7) break;
+            if (!pairManager.isValidOption(option)) {
+                System.out.println("Please enter a valid option (1-7).");
+                continue;
+            }
             double amount = getAmount(scanner);
             if (amount <= 0) continue;
             try {
-                switch (option) {
-                    case 1 -> convertCurrency(exchanges, Currency.USD, Currency.ARS, amount);
-                    case 2 -> convertCurrency(exchanges, Currency.ARS, Currency.USD, amount);
-                    case 3 -> convertCurrency(exchanges, Currency.USD, Currency.BRL, amount);
-                    case 4 -> convertCurrency(exchanges, Currency.BRL, Currency.USD, amount);
-                    case 5 -> convertCurrency(exchanges, Currency.USD, Currency.COP, amount);
-                    case 6 -> convertCurrency(exchanges, Currency.COP, Currency.USD, amount);
-                    default -> System.out.println("Please choose a valid option");
-                }
+                String[] currencies = pairManager.getCurrencyPair(option);
+                convertCurrency(exchanges, currencies[0], currencies[1], amount);
             } catch (IOException | InterruptedException e) {
                 System.out.println("An error occurred while fetching rates: " + e.getMessage());
             }
