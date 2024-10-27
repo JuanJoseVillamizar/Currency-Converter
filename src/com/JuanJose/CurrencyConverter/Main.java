@@ -2,6 +2,7 @@ package com.JuanJose.CurrencyConverter;
 
 import com.JuanJose.CurrencyConverter.exchange.ExchangeService;
 import com.JuanJose.CurrencyConverter.models.Rates;
+import com.JuanJose.CurrencyConverter.constans.Currency;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -23,12 +24,12 @@ public class Main {
                 double amount = scanner.nextDouble();
                 try {
                     switch (option) {
-                        case 1 -> convertCurrency(exchanges, "USD", "ARS", amount);
-                        case 2 -> convertCurrency(exchanges, "ARS", "USD", amount);
-                        case 3 -> convertCurrency(exchanges, "USD", "BRL", amount);
-                        case 4 -> convertCurrency(exchanges, "BRL", "USD", amount);
-                        case 5 -> convertCurrency(exchanges, "USD", "COP", amount);
-                        case 6 -> convertCurrency(exchanges, "COP", "USD", amount);
+                        case 1 -> convertCurrency(exchanges, Currency.USD, Currency.ARS, amount);
+                        case 2 -> convertCurrency(exchanges, Currency.ARS, Currency.USD, amount);
+                        case 3 -> convertCurrency(exchanges, Currency.USD, Currency.BRL, amount);
+                        case 4 -> convertCurrency(exchanges, Currency.BRL, Currency.USD, amount);
+                        case 5 -> convertCurrency(exchanges, Currency.USD, Currency.COP, amount);
+                        case 6 -> convertCurrency(exchanges, Currency.COP, Currency.USD, amount);
                         default -> System.out.println("Please choose a valid option");
                     }
                 } catch (IOException | InterruptedException e) {
