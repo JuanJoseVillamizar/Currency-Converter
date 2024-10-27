@@ -17,22 +17,31 @@ public class ExchangeService {
     public ExchangeService() {
         Config config = new Config();
         API_KEY = config.get("EXCHANGE_API_KEY");
+        if (API_KEY == null || API_KEY.isEmpty()) {
+            throw new IllegalArgumentException("API Key is missing or invalid. Please check your configuration.");
+        }
     }
 
     public Rates fetchRates(String baseCurrent, String targetCurrent, double amount) throws IOException, InterruptedException {
         String URL_API = "https://v6.exchangerate-api.com/v6/" + API_KEY + "/pair/" + baseCurrent + "/" + targetCurrent + "/" + amount;
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(URL_API))
-                .build();
-        HttpResponse<String> response = client
-                .send(request, HttpResponse.BodyHandlers.ofString());
 
-        if (response.statusCode() != 200) {
-            throw new IOException("Oops! There was an issue calling the API. Status code: " + response.statusCode());
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL_API))
+                    .build();
+            HttpResponse<String> response;
+            try {
+                response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            } catch (IOException e) {
+                throw new IOException("Network error occurred. Please check your internet connection.");
+            }
+
+            if (response.statusCode() != 200) {
+                throw new IOException("Error from API: " + response.body() + " (Status code: " + response.statusCode() + ")");
+            }
+
+            return parseResponse(response.body());
         }
-
-        return parseResponse(response.body());
     }
 
     public Rates parseResponse(String jsonResponse) {
