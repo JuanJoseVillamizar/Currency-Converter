@@ -27,6 +27,7 @@ public class Config {
             e.printStackTrace();
         }
     }
+
     public String get(String key) {
         return propertis.get(key);
     }

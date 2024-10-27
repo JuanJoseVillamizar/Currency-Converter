@@ -13,21 +13,29 @@ import java.net.http.HttpResponse;
 
 public class ExchangeService {
     private final String API_KEY;
-    public ExchangeService(){
+
+    public ExchangeService() {
         Config config = new Config();
         API_KEY = config.get("EXCHANGE_API_KEY");
     }
-    public Rates fetchRates(String baseCurrent,String targetCurrent,double amount) throws IOException, InterruptedException {
-        String URL_API = "https://v6.exchangerate-api.com/v6/"+API_KEY+"/pair/"+baseCurrent+"/"+targetCurrent +"/"+amount;
+
+    public Rates fetchRates(String baseCurrent, String targetCurrent, double amount) throws IOException, InterruptedException {
+        String URL_API = "https://v6.exchangerate-api.com/v6/" + API_KEY + "/pair/" + baseCurrent + "/" + targetCurrent + "/" + amount;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URL_API))
                 .build();
-            HttpResponse<String> response = client
-                    .send(request, HttpResponse.BodyHandlers.ofString());
-            return parseResponse(response.body());
+        HttpResponse<String> response = client
+                .send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new IOException("Oops! There was an issue calling the API. Status code: " + response.statusCode());
+        }
+
+        return parseResponse(response.body());
     }
-    public Rates parseResponse (String jsonResponse){
+
+    public Rates parseResponse(String jsonResponse) {
         Gson gson = new GsonBuilder()
                 .create();
         return gson.fromJson(jsonResponse, Rates.class);

@@ -8,12 +8,10 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) {
         ExchangeService exchanges = new ExchangeService();
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
-        Double result;
-        System.out.println("Choose one option");
         while (true) {
             displayMenu();
             int option = scanner.nextInt();
@@ -21,18 +19,22 @@ public class Main {
                 break;
             }
             System.out.println("Please enter the amount you wish to convert:");
-            if (scanner.hasNextDouble()){
+            if (scanner.hasNextDouble()) {
                 double amount = scanner.nextDouble();
-                switch (option) {
-                    case 1 -> convertCurrency(exchanges, "USD", "ARS", amount);
-                    case 2 -> convertCurrency(exchanges, "ARS", "USD", amount);
-                    case 3 -> convertCurrency(exchanges, "USD", "BRL", amount);
-                    case 4 -> convertCurrency(exchanges, "BRL", "USD", amount);
-                    case 5 -> convertCurrency(exchanges, "USD", "COP", amount);
-                    case 6 -> convertCurrency(exchanges, "COP", "USD", amount);
-                    default -> System.out.println("Please choose a valid option");
+                try {
+                    switch (option) {
+                        case 1 -> convertCurrency(exchanges, "USD", "ARS", amount);
+                        case 2 -> convertCurrency(exchanges, "ARS", "USD", amount);
+                        case 3 -> convertCurrency(exchanges, "USD", "BRL", amount);
+                        case 4 -> convertCurrency(exchanges, "BRL", "USD", amount);
+                        case 5 -> convertCurrency(exchanges, "USD", "COP", amount);
+                        case 6 -> convertCurrency(exchanges, "COP", "USD", amount);
+                        default -> System.out.println("Please choose a valid option");
+                    }
+                } catch (IOException | InterruptedException e) {
+                    System.out.println("An error occurred while fetching rates: " + e.getMessage());
                 }
-            }else{
+            } else {
                 System.out.println("Please enter a valid number.");
                 scanner.next();
             }
@@ -55,8 +57,9 @@ public class Main {
                 *********************************************************
                 """);
     }
-    public  static void convertCurrency(ExchangeService exchanges, String base, String target, double amount) throws IOException, InterruptedException {
-        Rates rates = exchanges.fetchRates(base,target,amount);
+
+    public static void convertCurrency(ExchangeService exchanges, String base, String target, double amount) throws IOException, InterruptedException {
+        Rates rates = exchanges.fetchRates(base, target, amount);
         double result = rates.getConversion_result();
         System.out.printf("%.2f %s = %.2f %s%n", amount, base, result, target);
     }
