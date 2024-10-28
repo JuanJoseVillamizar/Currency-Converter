@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class Config {
     private static final String ENV_FILE = ".env";
-    private Map<String, String> propertis = new HashMap<>();
+    private Map<String, String> properties = new HashMap<>();
 
     public Config() {
         loadEnv();
@@ -20,16 +20,16 @@ public class Config {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("=");
                 if (parts.length == 2) {
-                    propertis.put(parts[0].trim(), parts[1].trim());
+                    properties.put(parts[0].trim(), parts[1].trim());
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to load configuration: " + e.getMessage(), e);
         }
     }
 
     public String get(String key) {
-        return propertis.get(key);
+        return properties.get(key);
     }
 }
 

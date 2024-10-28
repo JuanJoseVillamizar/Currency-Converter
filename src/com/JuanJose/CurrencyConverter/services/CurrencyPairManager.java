@@ -14,6 +14,10 @@ public class CurrencyPairManager {
         currencyPairs.put(4, new String[]{Currency.BRL, Currency.USD});
         currencyPairs.put(5, new String[]{Currency.USD, Currency.COP});
         currencyPairs.put(6, new String[]{Currency.COP, Currency.USD});
+        currencyPairs.put(7, new String[]{Currency.USD, Currency.EUR});
+        currencyPairs.put(8, new String[]{Currency.EUR, Currency.USD});
+        currencyPairs.put(9, new String[]{Currency.USD, Currency.MXN});
+        currencyPairs.put(10, new String[]{Currency.MXN, Currency.USD});
     }
 
     public String[] getCurrencyPair(int option){

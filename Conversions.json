@@ -1,0 +1,22 @@
+[
+  {
+    "result": "success",
+    "base_code": "USD",
+    "target_code": "EUR",
+    "amount": 600.0,
+    "conversion_rate": 0.9259,
+    "conversion_result": 555.54,
+    "conversion": "600,00 USD \u003d 555,54 EUR\r\n",
+    "timestamp": "2024-10-27 20:09:56"
+  },
+  {
+    "result": "success",
+    "base_code": "EUR",
+    "target_code": "USD",
+    "amount": 554.0,
+    "conversion_rate": 1.08,
+    "conversion_result": 598.32,
+    "conversion": "554,00 EUR \u003d 598,32 USD\r\n",
+    "timestamp": "2024-10-27 20:10:07"
+  }
+]
